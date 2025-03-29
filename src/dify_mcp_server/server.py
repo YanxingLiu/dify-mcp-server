@@ -45,7 +45,7 @@ class DifyAPI(ABC):
             conversation_id=None,
             user="default_user",
             files=None,):
-        url = f"{self.dify_base_url}/workflows/run"
+        url = f"{self.dify_base_url}/chat-messages"
         headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json"
