@@ -11,17 +11,30 @@ from mcp.server.models import InitializationOptions
 from omegaconf import OmegaConf
 
 
+def get_app_info():
+    config_path = os.getenv("CONFIG_PATH")
+    base_url = os.getenv("DIFY_BASE_URL")
+    dify_app_sks = os.getenv("DIFY_APP_SKS")
+    if config_path is not None:
+        print(f"Loading config from {config_path}")
+        config = OmegaConf.load(config_path)
+        dify_base_url = config.get('dify_base_url', "https://api.dify.ai/v1")
+        dify_app_sks = config.get('dify_app_sks', [])
+        return dify_base_url, dify_app_sks
+    elif base_url is not None and dify_app_sks is not None:
+        print(f"Loading config from env variables")
+        dify_base_url = base_url
+        dify_app_sks = dify_app_sks.split(",")
+        return dify_base_url, dify_app_sks
+
 class DifyAPI(ABC):
     def __init__(self,
-                 config_path,
+                 base_url: str,
+                 dify_app_sks: list,
                  user="default_user"):
-        if not config_path:
-            raise ValueError("config path not provided")
-        self.config = OmegaConf.load(config_path)
-
         # dify configs
-        self.dify_base_url = self.config.dify_base_url
-        self.dify_app_sks = self.config.dify_app_sks
+        self.dify_base_url = base_url
+        self.dify_app_sks = dify_app_sks
         self.user = user
 
         # dify app infos
@@ -169,9 +182,9 @@ class DifyAPI(ABC):
         return response.json()
 
 
-config_path = os.getenv("CONFIG_PATH")
+base_url, dify_app_sks = get_app_info()
 server = Server("dify_mcp_server")
-dify_api = DifyAPI(config_path)
+dify_api = DifyAPI(base_url, dify_app_sks)
 
 
 @server.list_tools()

@@ -15,7 +15,9 @@ RUN pip install --no-cache-dir hatchling && hatch build && pip install --no-cach
 COPY src/dify_mcp_server /app/src/dify_mcp_server
 
 # Set environment variables, you should provide CONFIG_PATH during container run
-ENV CONFIG_PATH=/path/to/config.yaml
+ENV DIFY_BASE_URL="https://cloud.dify.ai/v1"
+ENV DIFY_APP_SKS="app-sk1,app-sk2"
+# ENV CONFIG_PATH=/path/to/config.yaml 
 
 # Set the entrypoint
 ENTRYPOINT ["dify_mcp_server"]
