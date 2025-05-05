@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/yanxingliu-dify-mcp-server-badge.png)](https://mseep.ai/app/yanxingliu-dify-mcp-server)
+
 # Model Context Protocol (MCP) Server for dify workflows
 A simple implementation of an MCP server for using [dify](https://github.com/langgenius/dify). It achieves the invocation of the Dify workflow by calling the tools of MCP.
 ## 📰 News
